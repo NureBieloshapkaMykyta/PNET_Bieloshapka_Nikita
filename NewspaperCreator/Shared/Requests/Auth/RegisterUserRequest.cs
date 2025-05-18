@@ -5,4 +5,5 @@ namespace Shared.Requests.Auth;
 public record RegisterUserRequest(
     string Username,
     [EmailAddress]string Email,
-    [MinLength(6)]string Password);
+    [MinLength(6)]string Password,
+    string ConfirmPassword);

@@ -4,12 +4,70 @@ using Shared.Requests.Auth;
 
 namespace NewspaperCreator.Controllers;
 
-public class AuthController(IAuthService authService) : Controller
+public class AuthController : Controller
 {
-    [HttpPost]
-    public async Task<IActionResult> Register([FromBody] RegisterUserRequest request, CancellationToken cancellationToken = default)
+    private readonly IAuthService _authService;
+
+    public AuthController(IAuthService authService)
     {
-        var result = await authService.RegisterUserAsync(request, cancellationToken);
+        _authService = authService;
+    }
+
+    [HttpGet]
+    public IActionResult Register()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Register(RegisterUserRequest request, CancellationToken cancellationToken = default)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(request);
+        }
+
+        var result = await _authService.RegisterUserAsync(request, cancellationToken);
+
+        if (!result.IsSuccessful)
+        {
+            ModelState.AddModelError("", result.Message);
+            return View(request);
+        }
+
+        return RedirectToAction(nameof(Login));
+    }
+
+    [HttpGet]
+    public IActionResult Login()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Login(SignInRequest request, CancellationToken cancellationToken = default)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(request);
+        }
+
+        var result = await _authService.SignIn(request, cancellationToken);
+
+        if (!result.IsSuccessful)
+        {
+            ModelState.AddModelError("", result.Message);
+            return View(request);
+        }
+
+        return RedirectToAction("Index", "Home");
+    }
+
+    [HttpPost]
+    [Route("api/[controller]/register")]
+    public async Task<IActionResult> RegisterApi([FromBody] RegisterUserRequest request, CancellationToken cancellationToken = default)
+    {
+        var result = await _authService.RegisterUserAsync(request, cancellationToken);
 
         if (!result.IsSuccessful)
         {
@@ -20,9 +78,10 @@ public class AuthController(IAuthService authService) : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Login([FromBody] SignInRequest request, CancellationToken cancellationToken = default)
+    [Route("api/[controller]/login")]
+    public async Task<IActionResult> LoginApi([FromBody] SignInRequest request, CancellationToken cancellationToken = default)
     {
-        var result = await authService.SignIn(request, cancellationToken);
+        var result = await _authService.SignIn(request, cancellationToken);
 
         if (!result.IsSuccessful)
         {
