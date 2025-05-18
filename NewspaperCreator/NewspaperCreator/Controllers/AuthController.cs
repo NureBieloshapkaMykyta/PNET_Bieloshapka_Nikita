@@ -1,4 +1,4 @@
-﻿using Business.Abstractions;
+﻿using Business.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Shared.Requests.Auth;
 

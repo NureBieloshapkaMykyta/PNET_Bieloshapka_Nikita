@@ -1,5 +1,5 @@
 ﻿using System.Text;
-using Business.Abstractions;
+using Business.Interfaces;
 using Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;

@@ -1,4 +1,4 @@
-﻿using Business.Abstractions;
+﻿using Business.Interfaces;
 using Core.Entities;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;

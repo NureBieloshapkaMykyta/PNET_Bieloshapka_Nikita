@@ -4,6 +4,7 @@ public class Article
 {
     public required long Id { get; set; }
     public required string Title { get; set; }
+    public required string Content { get; set; }
     public required long IssueId { get; set; }
     public virtual Issue? Issue { get; set; }
     public required long? AuthorId { get; set; }

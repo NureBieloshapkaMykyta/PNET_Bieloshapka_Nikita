@@ -1,8 +1,7 @@
-﻿
-using Shared.Helpers;
+﻿using Shared.Helpers;
 using Shared.Requests.Auth;
 
-namespace Business.Abstractions;
+namespace Business.Interfaces;
 
 public interface IAuthService
 {
